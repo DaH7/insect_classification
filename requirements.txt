@@ -1,0 +1,17 @@
+librosa
+torch
+torchvision
+scipy
+matplotlib
+numpy
+pandas
+tensorflow
+tensorflow-probability
+torchmetrics
+seaborn
+ipykernel
+scaper
+wget
+Albumentations
+opendatasets
+kaggle
