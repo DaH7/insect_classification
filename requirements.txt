@@ -15,3 +15,5 @@ wget
 Albumentations
 opendatasets
 kaggle
+pillow
+Image

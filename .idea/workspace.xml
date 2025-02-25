@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7ee852b-7a53-45e0-8b56-faf0a6ca95c4" name="Changes" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/data/creating_csv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/resizing_images.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/customDataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/renaming_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/renaming_images.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/dataset_dl.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/dataset_dl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,30 +30,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.dataset_dl.executor&quot;: &quot;Run&quot;,
-    &quot;Python.renaming_images.executor&quot;: &quot;Run&quot;,
-    &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/dahan/PycharmProjects/insect_classification/data/insects_dataset&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.creating_csv.executor": "Run",
+    "Python.customDataset.executor": "Run",
+    "Python.custom_dataset.executor": "Run",
+    "Python.customdata.executor": "Run",
+    "Python.dataset_dl.executor": "Run",
+    "Python.renaming_images.executor": "Run",
+    "Python.resizing_images.executor": "Run",
+    "Python.scratch.executor": "Run",
+    "Python.train.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/dahan/PycharmProjects/insect_classification/data/insects_dataset"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Python&quot;,
-      &quot;JSON&quot;,
-      &quot;TEXT&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python",
+      "JSON",
+      "TEXT"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification\data\insects_dataset" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\dahan\PycharmProjects\insect_classification\data\insects_dataset" />
+      <recent name="C:\Users\dahan\PycharmProjects\insect_classification\models" />
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification\data" />
+      <recent name="C:\Users\dahan\PycharmProjects\insect_classification\data\insects_dataset" />
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification" />
     </key>
   </component>
@@ -76,7 +88,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739996978917</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1740001874047</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740001874047</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

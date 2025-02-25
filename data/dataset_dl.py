@@ -9,16 +9,16 @@ import kaggle
 
 kaggle_api_path =  os.path.expanduser("~/kaggle_key.json")
 
-# Download dataset
+# download dataset
 print("Downloading dataset...")
 kaggle.api.dataset_download_files(dataset_name, path=".", unzip=False)
 
-# Extract dataset
+# extract dataset
 print("Extracting dataset...")
 with zipfile.ZipFile(zip_file, "r") as zip_ref:
     zip_ref.extractall(download_path)
 
-# Clean up zip file
+# clean up zip file
 os.remove(zip_file)
 
 print(f"Dataset downloaded and extracted to '{download_path}' successfully!")
