@@ -75,7 +75,7 @@ class insectModelV0(nn.Module):
 #small test run
 torch.manual_seed(42)
 
-model_0 = insectModelV0(input_shape=16384, # one for every pixel (28x28)
+model_0 = insectModelV0(input_shape=16384, # one for every pixel (128*128)
     hidden_units=10, # how many units in the hidden layer
     output_shape=len(class_names) # one for every class
 )
