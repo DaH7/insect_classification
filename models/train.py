@@ -4,6 +4,7 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 import torchvision
 from numpy.ma.core import shape
+from sympy.physics.units import momentum
 from sympy.physics.vector.printing import params
 from torch.utils.data import DataLoader
 from customDataset import insect_dataset
@@ -15,9 +16,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
 #hyperparameters
-in_channels= 3
-num_classes = 10
-learning_rate = 1e-3
+lr = 1e-3
+momentum =.9
 batch_size = 32
 
 
@@ -104,7 +104,7 @@ def accuracy_fn(y_true, y_pred):
 
 #loss function and optimizer
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(params=model_0.parameters(), lr=0.001, momentum=0.9)
+optimizer = torch.optim.SGD(params=model_0.parameters(), lr=lr, momentum=momentum)
 # optimizer = torch.optim.SGD(params=model_0.parameters(), lr=0.1)
 
 #small test run
