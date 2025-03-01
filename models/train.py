@@ -10,6 +10,9 @@ from torch.utils.data import DataLoader
 from customDataset import insect_dataset
 import matplotlib.pyplot as plt
 from tqdm.auto import tqdm
+from torch.optim.lr_scheduler import StepLR
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+
 
 # allow multiprocessing
 torch.multiprocessing.freeze_support()
@@ -20,10 +23,10 @@ def main():
     print(device)
 
     #hyperparameters
-    lr = 0.01
+    lr = 0.001
     momentum = 0.9
     batch_size = 32
-    epochs = 5
+    epochs = 30
 
     #load data
     dataset = insect_dataset(csv_file='all_insects.csv',
@@ -82,92 +85,172 @@ def main():
     class insectModelV0(nn.Module):
         def __init__(self, input_shape:int, hidden_units:int, output_shape:int):
             super().__init__()
-            self.layer_stack = nn.Sequential(
-                nn.Flatten(),
-                nn.Linear(in_features=input_shape,out_features=hidden_units),
-                nn.ReLU(),
-                nn.Linear(in_features=hidden_units,out_features=output_shape),
-                nn.ReLU()
-            )
-        def forward(self,x):
-            return self.layer_stack(x)
+            self.block_1 = nn.Sequential(
+                nn.Conv2d(in_channels = input_shape,
+                          out_channels= hidden_units,
+                          kernel_size = 3 ,
+                          stride = 1,
+                          padding = 1),
 
-    #intial model
-    model_0 = insectModelV0(input_shape=49152, # one for every pixel (128*128)
-        hidden_units=16, # how many units in the hidden layer
+                nn.ReLU(),
+                nn.Conv2d(in_channels=hidden_units,
+                          out_channels=hidden_units,
+                          kernel_size = 3,
+                          stride = 1,
+                          padding = 1),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size = 2,
+                             stride = 2),
+
+            )
+            self.block_2 = nn.Sequential(
+                nn.Conv2d(in_channels = hidden_units,
+                          out_channels = hidden_units,
+                          kernel_size = 3,
+                          padding = 1),
+                nn.ReLU(),
+                nn.Conv2d(in_channels=hidden_units,
+                          out_channels=hidden_units,
+                          kernel_size=3,
+                          padding=1),
+                nn.ReLU(),
+                nn.Dropout(p=0.1),
+                nn.MaxPool2d(kernel_size = 2,
+                             stride = 2)
+            )
+
+            # Find flattened output size dynamically
+            self._compute_flattened_size(input_shape)
+
+            self.classifier = nn.Sequential(
+                nn.Flatten(),
+                nn.Linear(in_features = self._to_linear,
+                          out_features = output_shape)
+            )
+
+        def _compute_flattened_size(self, input_channels):
+            with torch.no_grad():
+                sample_input = torch.randn(1, input_channels, 128, 128)  # Batch size 1, image size 128x128
+                out = self.block_1(sample_input)
+                out = self.block_2(out)
+                self._to_linear = out.view(1, -1).shape[1]  # Flatten and get final feature size
+
+        def forward(self,x:torch.Tensor):
+            x = self.block_1(x)
+            x = self.block_2(x)
+            x = self.classifier(x)
+            return x
+
+
+
+    # model
+    model_0 = insectModelV0(
+        input_shape=3, #RGB
+        hidden_units=32, # how many units in the hidden layer
         output_shape=len(class_names) # one for every class
-    )
+        ).to(device)
+
 
     # Calculate accuracy (a classification metric)
     def accuracy_fn(y_true, y_pred):
-        """Calculates accuracy between truth labels and predictions.
 
-        Args:
-            y_true (torch.Tensor): Truth labels for predictions.
-            y_pred (torch.Tensor): Predictions to be compared to predictions.
-
-        Returns:
-            [torch.float]: Accuracy value between y_true and y_pred, e.g. 78.45
-        """
-        correct = torch.eq(y_true, y_pred).sum().item()
+        correct = (y_true == y_pred).sum().item()
         acc = (correct / len(y_pred)) * 100
         return acc
+
+        #correct = torch.eq(y_true, y_pred).sum().item()  #Sum of correct predictions
+        # acc = (correct / len(y_pred)) * 100 # Divide by total predictions and convert to percentage
+        # return acc
 
 
     #loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model_0.parameters(), lr=lr, momentum=momentum)
-    # optimizer = torch.optim.SGD(params=model_0.parameters(), lr=0.1)
+    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=7, factor=0.1)
+    # scheduler = StepLR(optimizer, step_size = 15, gamma = 0.1)
+
+
 
     #small test run
     torch.manual_seed(42)
+    best_test_loss = float('inf')
+    best_model_state = None
 
 
     for epoch in tqdm(range(epochs)):
-        print(f"Epoch: {epoch}\n-----")
+        print(f"\nEpoch: {epoch}\n-----")
 
         #training
         train_loss = 0
 
-        for train_feature_batch, (X,y) in enumerate(train_loader):
+        for batch, (X,y) in enumerate(train_loader):
             model_0.train()
+
+            X, y = X.to(device), y.to(device)
 
             #forward pass
             y_pred = model_0(X)
 
             #Calculate loss per batch
             loss = loss_fn(y_pred,y)
-            train_loss += loss #aggregates loss per epoch
+            train_loss += loss.item() #aggregates loss per epoch
 
             #backpropagation
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
+
+
             # how many samples have been gone through
-            if train_feature_batch % 400 == 0:
-                print(f"Looked at {train_feature_batch * len(X)}/{len(train_loader.dataset)} samples")
+            # if batch % 400 == 0:
+            #     print(f"Looked at {batch * len(X)}/{len(train_loader.dataset)} samples")
+
+
 
         #avg loss per batch per epoch
         train_loss /= len(train_loader)
 
-        #testing
+
+        #eval mode
         model_0.eval()
+
+        #initilze
         test_loss, test_acc = 0,0
+
 
         with torch.inference_mode():
             for X,y in test_loader:
+
+                X,y = X.to(device), y.to(device)
+
+
                 #forward pass
                 test_pred = model_0(X)
+
                 #calculate loss
-                test_loss += loss_fn(test_pred,y)
+                test_loss += loss_fn(test_pred,y).item()
+
+
                 #calculate accuracy
                 test_acc += accuracy_fn(y_true=y, y_pred=test_pred.argmax(dim=1))
+
             #calulate test metrics
             test_loss /= len(test_loader)
             test_acc /= len(test_loader)
+
+            val_loss = test_loss
+            scheduler.step(val_loss)  # Update learning rate
+            print(f"\nLearning rate scheduler step executed. Validation loss: {val_loss:.5f}")
+
         #print results
         print(f"\nTrain loss: {train_loss:.5f} | Test loss: {test_loss:.5f}, Test acc: {test_acc:.2f}%\n")
+
+        if test_loss < best_test_loss:
+            best_test_loss = test_loss
+            best_model_state = model_0.state_dict()  # Save the model state
+            torch.save(best_model_state, 'best_model.pth')  # Save the model to file
+            print(f"\nBest model saved with Test Loss: {test_loss:.5f}")
 
 if __name__ == '__main__':
     main()
