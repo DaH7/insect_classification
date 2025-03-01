@@ -11,7 +11,7 @@ class insect_dataset(Dataset):
         self.annotations = pd.read_csv(csv_file)
         self.root_dir = root_dir
         self.transform = transform if transform else transforms.Compose([
-            transforms.Resize((128, 128)),  # resize image
+            transforms.Resize(128,128),  # resize image
             transforms.Grayscale(num_output_channels=3),  #grayscale to RGB
             transforms.ToTensor()
         ])
