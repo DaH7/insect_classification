@@ -26,14 +26,14 @@ def main():
     lr = 0.001
     momentum = 0.9
     batch_size = 32
-    epochs = 30
+    epochs = 50
 
     #load data
-    dataset = insect_dataset(csv_file='all_insects.csv',
-                             root_dir='all_insects',
+    dataset = insect_dataset(csv_file='augmented_images.csv',
+                             root_dir='augmented_images',
                              transform = transforms.ToTensor())
 
-    train_set,test_set = torch.utils.data.random_split(dataset, [3300,514])
+    train_set,test_set = torch.utils.data.random_split(dataset, [0.8,0.2])
     train_loader = DataLoader(dataset = train_set,
                               batch_size=batch_size,
                               shuffle = True,
@@ -99,6 +99,11 @@ def main():
                           stride = 1,
                           padding = 1),
                 nn.ReLU(),
+                nn.Conv2d(in_channels=hidden_units,
+                          out_channels=hidden_units,
+                          kernel_size=3,
+                          padding=1),
+                nn.ReLU(),
                 nn.MaxPool2d(kernel_size = 2,
                              stride = 2),
 
@@ -114,12 +119,19 @@ def main():
                           kernel_size=3,
                           padding=1),
                 nn.ReLU(),
-                nn.Dropout(p=0.1),
+                nn.Conv2d(in_channels=hidden_units,
+                          out_channels=hidden_units,
+                          kernel_size=3,
+                          padding=1),
+                nn.ReLU(),
+                nn.Dropout(p=0.5),
                 nn.MaxPool2d(kernel_size = 2,
                              stride = 2)
             )
 
-            # Find flattened output size dynamically
+
+
+            # find flattened output size dynamically
             self._compute_flattened_size(input_shape)
 
             self.classifier = nn.Sequential(
@@ -165,9 +177,9 @@ def main():
 
     #loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(params=model_0.parameters(), lr=lr, momentum=momentum)
-    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=7, factor=0.1)
-    # scheduler = StepLR(optimizer, step_size = 15, gamma = 0.1)
+    optimizer = torch.optim.SGD(params=model_0.parameters(), lr=lr, momentum=momentum, weight_decay=0.01)
+    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=5, factor=0.1)
+
 
 
 
@@ -191,7 +203,7 @@ def main():
             #forward pass
             y_pred = model_0(X)
 
-            #Calculate loss per batch
+            #calculate loss per batch
             loss = loss_fn(y_pred,y)
             train_loss += loss.item() #aggregates loss per epoch
 
@@ -244,12 +256,12 @@ def main():
             print(f"\nLearning rate scheduler step executed. Validation loss: {val_loss:.5f}")
 
         #print results
-        print(f"\nTrain loss: {train_loss:.5f} | Test loss: {test_loss:.5f}, Test acc: {test_acc:.2f}%\n")
+        print(f"\nTrain loss: {train_loss:.5f} | Test loss: {test_loss:.5f} | Train Test Diff {train_loss-test_loss:5f} | Test acc: {test_acc:.2f}%\n" )
 
         if test_loss < best_test_loss:
             best_test_loss = test_loss
             best_model_state = model_0.state_dict()  # Save the model state
-            torch.save(best_model_state, 'best_model.pth')  # Save the model to file
+            torch.save(best_model_state, 'model_1.pth')  # Save the model to file
             print(f"\nBest model saved with Test Loss: {test_loss:.5f}")
 
 if __name__ == '__main__':
