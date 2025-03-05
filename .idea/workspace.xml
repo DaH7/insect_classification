@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7ee852b-7a53-45e0-8b56-faf0a6ca95c4" name="Changes" comment="updates" />
+    <list default="true" id="d7ee852b-7a53-45e0-8b56-faf0a6ca95c4" name="Changes" comment="expanding original dataset with data augmentation.. 6 images per original image">
+      <change afterPath="$PROJECT_DIR$/models/normalization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/customDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/customDataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/data_augmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/data_augmentation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/train.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,12 +19,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/DaH7/insect_classification.git",
-    "accountId": "3d6cbf8a-9af5-4ea1-8de5-f4bff3c427e3"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;DaH7&quot;
   }
-}]]></component>
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DaH7/insect_classification.git&quot;,
+    &quot;accountId&quot;: &quot;3d6cbf8a-9af5-4ea1-8de5-f4bff3c427e3&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -34,7 +46,9 @@
     "Python.customDataset.executor": "Run",
     "Python.custom_dataset.executor": "Run",
     "Python.customdata.executor": "Run",
+    "Python.data_augmentation.executor": "Run",
     "Python.dataset_dl.executor": "Run",
+    "Python.normalization.executor": "Run",
     "Python.renaming_images.executor": "Run",
     "Python.resizing_images.executor": "Run",
     "Python.scratch.executor": "Run",
@@ -58,6 +72,7 @@
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification\models" />
+      <recent name="C:\Users\dahan\PycharmProjects\insect_classification\models\all_insects" />
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification\data" />
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification\data\insects_dataset" />
       <recent name="C:\Users\dahan\PycharmProjects\insect_classification" />
@@ -111,12 +126,73 @@
       <option name="project" value="LOCAL" />
       <updated>1740511860640</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="updates">
+      <option name="closed" value="true" />
+      <created>1740511959484</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740511959484</updated>
+    </task>
+    <task id="LOCAL-00006" summary="first working training model... slow train time">
+      <option name="closed" value="true" />
+      <created>1740612856052</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740612856052</updated>
+    </task>
+    <task id="LOCAL-00007" summary="first working training model... slow train time">
+      <option name="closed" value="true" />
+      <created>1740636139087</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740636139087</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added non linearity and some small changes, fixed training speed...">
+      <option name="closed" value="true" />
+      <created>1740685285482</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1740685285482</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Full CNN model.. with this version being the best version performing with test_acc being 62.13%">
+      <option name="closed" value="true" />
+      <created>1740806945200</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1740806945200</updated>
+    </task>
+    <task id="LOCAL-00010" summary="updated with first CNN">
+      <option name="closed" value="true" />
+      <created>1740806966810</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1740806966810</updated>
+    </task>
+    <task id="LOCAL-00011" summary="expanding original dataset with data augmentation.. 6 images per original image">
+      <option name="closed" value="true" />
+      <created>1741067234071</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1741067234071</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="updates" />
+    <MESSAGE value="first working training model... slow train time" />
+    <MESSAGE value="added non linearity and some small changes, fixed training speed..." />
+    <MESSAGE value="Full CNN model.. with this version being the best version performing with test_acc being 62.13%" />
+    <MESSAGE value="updated with first CNN" />
+    <MESSAGE value="expanding original dataset with data augmentation.. 6 images per original image" />
+    <option name="LAST_COMMIT_MESSAGE" value="expanding original dataset with data augmentation.. 6 images per original image" />
   </component>
 </project>
