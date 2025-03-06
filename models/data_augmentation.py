@@ -74,13 +74,15 @@ def augment_images_in_folder(input_folder, num_augmentations=5):
             # list of possible augmentations
             transformations = [
                 A.HorizontalFlip(p=0.7),
-                A.VerticalFlip(p=0.3),
+                A.VerticalFlip(p=0.2),
                 A.Rotate(limit=30, p=0.5),
                 A.GaussNoise(var_limit=(10.0, 50.0), p=0.6),
                 A.GaussianBlur(blur_limit=(3, 7),p=0.4),
-                A.ElasticTransform(alpha=1, sigma=50, alpha_affine=50, p=0.5),
+                A.ElasticTransform(alpha=1, sigma=50, alpha_affine=50, p=0.4),
                 A.RandomBrightnessContrast(brightness_limit=0.2,contrast_limit=0.2, p=0.3),
-                A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20,p=0.3)
+                A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20,p=0.3),
+                A.CoarseDropout(max_holes=3, max_height=16, max_width=16, min_holes=1, p=0.5)
+
 
             ]
 
@@ -112,3 +114,4 @@ def augment_images_in_folder(input_folder, num_augmentations=5):
 
 # Example usage: provide the path to your folder of images
 augment_images_in_folder(root_path, num_augmentations=6)
+
