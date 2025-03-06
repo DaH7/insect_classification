@@ -14,6 +14,7 @@ class insect_dataset(Dataset):
             transforms.Resize(128,128),  # resize image
             transforms.Grayscale(num_output_channels=3),  #grayscale to RGB
             transforms.ToTensor()
+            # transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
         ])
         self.classes = {0:"Butterfly", 1:"Dragonfly", 2:"Grasshopper",3:"Ladybug",4:"Mosquito"}
 
