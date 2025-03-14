@@ -3,9 +3,9 @@ import zipfile
 import kaggle
 
 # Define dataset name and download path
-# dataset_name = "hammaadali/insects-recognition"
-# download_path = "insects_dataset"
-# zip_file = "insects-recognition.zip"
+dataset_name = "ismail703/insects"
+download_path = "Insect_classes_dataset"
+zip_file = "insects.zip"
 
 kaggle_api_path =  os.path.expanduser("~/kaggle_key.json")
 

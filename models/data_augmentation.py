@@ -81,6 +81,7 @@ def augment_images_in_folder(input_folder, num_augmentations=5):
                 A.ElasticTransform(alpha=1, sigma=50, alpha_affine=50, p=0.4),
                 A.RandomBrightnessContrast(brightness_limit=0.2,contrast_limit=0.2, p=0.3),
                 A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20,p=0.3),
+                A.ColorJitter(brightness=0.5),
                 A.CoarseDropout(max_holes=3, max_height=16, max_width=16, min_holes=1, p=0.5)
 
 
@@ -113,5 +114,5 @@ def augment_images_in_folder(input_folder, num_augmentations=5):
     print(f"CSV file saved at: {csv_path}")
 
 # Example usage: provide the path to your folder of images
-augment_images_in_folder(root_path, num_augmentations=6)
+augment_images_in_folder(root_path, num_augmentations=5)
 

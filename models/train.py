@@ -7,7 +7,7 @@ from numpy.ma.core import shape
 from sympy.physics.units import momentum
 from sympy.physics.vector.printing import params
 from torch.utils.data import DataLoader
-from customDataset import insect_dataset
+from customDataset import CustomDataset
 import matplotlib.pyplot as plt
 from tqdm.auto import tqdm
 from torch.optim.lr_scheduler import StepLR
@@ -29,8 +29,8 @@ def main():
     epochs = 50
 
     #load data
-    dataset = insect_dataset(csv_file='augmented_images.csv',
-                             root_dir='augmented_images',
+    dataset = CustomDataset(csv_file='C:/Users/dahan/PycharmProjects/insect_classification/data/classification.csv',
+                             root_dir='C:/Users/dahan/PycharmProjects/insect_classification/data/Insect_classes_dataset_resized',
                              transform = transforms.ToTensor())
 
     train_set,test_set = torch.utils.data.random_split(dataset, [0.8,0.2])
@@ -103,6 +103,7 @@ def main():
                           out_channels=hidden_units,
                           kernel_size=3,
                           padding=1),
+                nn.BatchNorm2d(hidden_units),
                 nn.ReLU(),
                 nn.MaxPool2d(kernel_size = 2,
                              stride = 2),
