@@ -13,7 +13,8 @@ class CustomDataset(Dataset):
         self.root_dir = root_dir
         self.transform = transform if transform else transforms.Compose([
             transforms.Resize((128, 128)),  # resize image
-            transforms.ToTensor()
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5635, 0.5614, 0.4023], std=[0.2856, 0.2658, 0.3135])
         ])
         # load class mappings from CSV
         self.classes = self.csv_to_dict(csv_file)
