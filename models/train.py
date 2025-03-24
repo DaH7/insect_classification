@@ -25,12 +25,12 @@ def main():
     #hyperparameters
     lr = 0.001
     momentum = 0.9
-    batch_size = 32
-    epochs = 50
+    batch_size = 64
+    epochs = 20
 
     #load data
     dataset = CustomDataset(csv_file='C:/Users/dahan/PycharmProjects/insect_classification/data/classification.csv',
-                             root_dir='C:/Users/dahan/PycharmProjects/insect_classification/data/Insect_classes_dataset_resized',
+                             root_dir='C:/Users/dahan/PycharmProjects/insect_classification/data/augmented_data',
                              transform = transforms.ToTensor())
 
     train_set,test_set = torch.utils.data.random_split(dataset, [0.8,0.2])
@@ -98,11 +98,6 @@ def main():
                           kernel_size = 3,
                           stride = 1,
                           padding = 1),
-                nn.ReLU(),
-                nn.Conv2d(in_channels=hidden_units,
-                          out_channels=hidden_units,
-                          kernel_size=3,
-                          padding=1),
                 nn.BatchNorm2d(hidden_units),
                 nn.ReLU(),
                 nn.MaxPool2d(kernel_size = 2,
@@ -114,11 +109,6 @@ def main():
                           out_channels = hidden_units,
                           kernel_size = 3,
                           padding = 1),
-                nn.ReLU(),
-                nn.Conv2d(in_channels=hidden_units,
-                          out_channels=hidden_units,
-                          kernel_size=3,
-                          padding=1),
                 nn.ReLU(),
                 nn.Conv2d(in_channels=hidden_units,
                           out_channels=hidden_units,
@@ -171,15 +161,11 @@ def main():
         acc = (correct / len(y_pred)) * 100
         return acc
 
-        #correct = torch.eq(y_true, y_pred).sum().item()  #Sum of correct predictions
-        # acc = (correct / len(y_pred)) * 100 # Divide by total predictions and convert to percentage
-        # return acc
-
 
     #loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model_0.parameters(), lr=lr, momentum=momentum, weight_decay=0.01)
-    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=5, factor=0.1)
+    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=3, factor=0.5)
 
 
 
